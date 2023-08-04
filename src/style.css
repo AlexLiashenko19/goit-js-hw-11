@@ -49,20 +49,20 @@ input {
     transition: all 200ms cubic-bezier(0.42, 0, 0.58, 1);
     -webkit-transform: rotateX(-16.62deg) rotateY(-28.64788975654116deg);
     transform: rotateX(-16.62deg) rotateY(-28.64788975654116deg);
-  }
+}
   
-  input:hover {
-    -webkit-transform: rotateX(-15.62deg) rotateY(-23.65deg);
-    transform: rotateX(-15.62deg) rotateY(-23.65deg);
-  }
+input:hover {
+-webkit-transform: rotateX(-15.62deg) rotateY(-23.65deg);
+  transform: rotateX(-15.62deg) rotateY(-23.65deg);
+}
   
-  .search__icon {
+.search__icon {
     height: 1.3em;
     width: 1.3em;
     fill: #b4b4b4;
-  }
+}
   
-  input:focus {
+input:focus {
     outline: none;
 }
 
@@ -79,9 +79,9 @@ button {
     z-index: 1;
     box-shadow: 6px 6px 12px #c5c5c5,
                 -6px -6px 12px #ffffff;
-   }
+}
    
-   button::before {
+button::before {
     content: '';
     width: 0;
     height: 3em;
@@ -97,7 +97,7 @@ button {
    
    button:hover::before {
     width: 9em;
-   }
+}
 
 .load-more {
     margin-top: 20px;
