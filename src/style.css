@@ -1,9 +1,6 @@
 body {
     margin: 0;
-    background-image: url(https://cdn.discordapp.com/attachments/1120768890180472944/1135871445533196338/image.png);
-    background-repeat: repeat;
-
-    background-size: 8%;
+    background-color: antiquewhite;
 }
 
 p {
@@ -67,7 +64,9 @@ input {
   
   input:focus {
     outline: none;
-  }
+}
+
+
 button {
     width: 9em;
     height: 3em;

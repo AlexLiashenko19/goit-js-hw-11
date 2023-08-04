@@ -4,6 +4,7 @@ export default class LoadMoreBtn {
 
     hidden && this.hide();
   }
+  
 
   getRefs(selector) {
     const refs = {};

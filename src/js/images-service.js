@@ -1,31 +1,30 @@
 import axios from 'axios';
 
-const API_KEY = '38624952-48a5054b7491e44a9faaec994';
-const BASE_URL = 'https://pixabay.com/api';
-
 export default class ImagesApiService {
+  #BASE_URL = 'https://pixabay.com/api';
+  #key = '38624952-48a5054b7491e44a9faaec994';
   constructor() {
     this.searchQuery = '';
     this.page = 1;
-    this.per_page = 40;
-    this.image_type = 'photo';
-    this.orientation = 'horizontal';
-    this.safesearch = 'true';
   }
+  async fetchImages() {
+    const params = new URLSearchParams({
+      key: this.#key,
+      per_page: 40,
+      image_type: 'photo',
+      orientation: 'horizontal',
+      safesearch: 'true',
+      q: this.searchQuery, 
+      page: this.page ++,
+    });
 
-  fetchImages() {
-    const url = `${BASE_URL}/?key=${API_KEY}&q=${this.searchQuery}&${this.image_type}&${this.orientation}&${this.safesearch}&page=${this.page}&${this.per_page}`;
-    return axios
-      .get(url)
-      .then(function (response) {
-        console.log(response.data);
-        return response.data;
-      })
-      .then(({ totalHits, hits }) => {
-        this.incrementPage();
-        return { totalHits, hits };
-      })
-      .catch(error => console.log(error));
+    try {
+      const URL = this.#BASE_URL + '?' + params;
+      const response = await axios.get(URL);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   incrementPage() {

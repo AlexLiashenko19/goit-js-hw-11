@@ -9,7 +9,8 @@ const refs = {
   galleryContainer: document.querySelector('.gallery'),
 };
 
-let hitsLength = 40;
+let hitsLength = "";
+let isFirstSearch = true;
 
 const loadMoreBtn = new LoadMoreBtn({
   selector: '.load-more',
@@ -21,43 +22,50 @@ const imagesApiService = new ImagesApiService();
 refs.form.addEventListener('submit', onSearch);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
-function onSearch(e) {
+async function onSearch(e) {
   e.preventDefault();
 
   imagesApiService.query = e.currentTarget.elements.searchQuery.value;
+  const { totalHits, hits } = await imagesApiService.fetchImages();
 
-  if (!imagesApiService.query) {
+  if (!imagesApiService.query.trim()) {
     Notiflix.Notify.failure(
       'Search box cannot be empty. Please enter the word.'
-    );
-    return;
-  }
+    )
+  return;
+}
+    if (isFirstSearch) {
+      Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+    };
+  
 
   loadMoreBtn.show();
   imagesApiService.resetPage();
   clearGalleryContainer();
-
   fetchImages();
 
   refs.form.reset();
 }
 
-function fetchImages() {
+async function fetchImages() {
   loadMoreBtn.disable();
-  imagesApiService.fetchImages().then(({ totalHits, hits }) => {
-    if (hitsLength > totalHits) {
+  try {
+    const { totalHits, hits } = await imagesApiService.fetchImages();
+    hitsLength = hits.length;
+    
+    if (imagesApiService.page - 1 >= Math.ceil(totalHits / 40)) {
       loadMoreBtn.hide();
-      Notiflix.Notify.failure(
+      Notiflix.Notify.success(
         "We're sorry, but you've reached the end of search results."
       );
-      return;
+
     } else if (hits.length === 0) {
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
-    } else {
-      Notiflix.Notify.success(`Hooray! We found ${hitsLength} images.`);
+    } 
+      
 
       renderImagesCards(hits);
       scrollImagesCards();
@@ -70,9 +78,11 @@ function fetchImages() {
       lightbox.refresh();
 
       loadMoreBtn.enable();
-      hitsLength += hits.length;
+      
     }
-  });
+  catch (error) {
+    console.error('Error fetching images:', error);
+  }
 }
 
 function renderImagesCards(images) {
@@ -87,7 +97,7 @@ function renderImagesCards(images) {
     <p class="info-item"><b>Likes</b>${image.likes}</p>
     <p class="info-item"><b>Views</b>${image.views}</p>
     <p class="info-item"><b>Comments</b>${image.comments}</p>
-    <p class="info-item"><b>Downloads</b>${image.comments}</p>
+    <p class="info-item"><b>Downloads</b>${image.downloads}</p>
   </div>
 </div>`
     )
