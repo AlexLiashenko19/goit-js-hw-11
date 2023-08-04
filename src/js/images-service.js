@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default class ImagesApiService {
-  #BASE_URL = 'https://pixabay.com/api';
+  #BASE_URL = 'https://pixabay.com/api/';
   #key = '38624952-48a5054b7491e44a9faaec994';
   constructor() {
     this.searchQuery = '';
