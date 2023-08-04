@@ -50,7 +50,7 @@ async function fetchImages() {
     hitsLength = hits.length;
     if (isFirstSearch) { 
       Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-      isFirstSearch = false;
+      
     }
     if (imagesApiService.page - 1 >= Math.ceil(totalHits / 40)) {
       loadMoreBtn.hide();
