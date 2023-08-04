@@ -24,20 +24,16 @@ loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
 async function onSearch(e) {
   e.preventDefault();
-
+  refs.galleryContainer.innerHTML = "";
+  imagesApiService.page = 1;
+  
   imagesApiService.query = e.currentTarget.elements.searchQuery.value;
-  const { totalHits, hits } = await imagesApiService.fetchImages();
+  
 
   if (!imagesApiService.query.trim()) {
-    Notiflix.Notify.failure(
-      'Search box cannot be empty. Please enter the word.'
-    )
-  return;
+    return Notiflix.Notify.info('Sorry, there are no images matching your search query. Please try again.')
+
 }
-    if (isFirstSearch) {
-      Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-    };
-  
 
   loadMoreBtn.show();
   imagesApiService.resetPage();
@@ -52,10 +48,13 @@ async function fetchImages() {
   try {
     const { totalHits, hits } = await imagesApiService.fetchImages();
     hitsLength = hits.length;
-    
+    if (isFirstSearch) { 
+      Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+      isFirstSearch = false;
+    }
     if (imagesApiService.page - 1 >= Math.ceil(totalHits / 40)) {
       loadMoreBtn.hide();
-      Notiflix.Notify.success(
+      Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
       );
 

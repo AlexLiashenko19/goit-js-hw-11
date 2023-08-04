@@ -19,7 +19,7 @@ export default class ImagesApiService {
     });
 
     try {
-      const URL = this.#BASE_URL + '?' + params;
+      const URL = `${this.#BASE_URL}?${params}`;
       const response = await axios.get(URL);
       return response.data;
     } catch (error) {
